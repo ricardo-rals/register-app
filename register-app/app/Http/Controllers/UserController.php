@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Http\Requests\StoreUpdateUserFormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class UserController extends Controller
 {
@@ -13,9 +15,11 @@ class UserController extends Controller
         $this->model = $user;
     }
 
-    public function index() {
+    public function index(Request $request) {
+        $search = $request->search;
 
-        return view('users.index');
+        $users = $this->model->getUsers(search: $request->get('search', ''));
+        return view('users.index', compact('users'));
     }
 
     public function create()
@@ -33,6 +37,35 @@ class UserController extends Controller
 
         $this->model->create($data)->givePermissionTo('user');
 
+        return redirect()->route('users.index');
+    }
+
+    public function edit($id) {
+        if (!$user = $this->model->find($id))
+            return redirect()->route('users.index');
+    
+        return view('users.edit', compact('user'));
+    }
+
+    public function update(StoreUpdateUserFormRequest $request, $id) {
+        if (!$user = $this->model->find($id))
+            return redirect()->route('users.index');
+        
+        $data = $request->only('name', 'email');
+        if($request->password)
+            $data['password'] = bcrypt($request->password);
+
+        if($request->image){
+            if ($user->image && Storage::exists($user->image)) {
+                Storage::delete($user->image);
+            }
+
+            $data['image'] = $request->image->store('users');
+        }
+            
+        
+        $user->update($data);
+        
         return redirect()->route('users.index');
     }
 }
