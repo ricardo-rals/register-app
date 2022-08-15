@@ -25,6 +25,7 @@ class User extends Authenticatable
         'phone_number',
         'birth_date',
         'image',
+        'age',
     ];
 
     /**
@@ -46,10 +47,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getUsers(string|null $search = null) {
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'birth_date',
+    ];
+
+    public function getUsers(string|null $search = null)
+    {
         $users = $this->where(function ($query) use ($search) {
             if ($search) {
-                $query->where('email', $search);
+                $query->where('age', $search);
                 $query->orWhere('name', 'LIKE', "%{$search}%");
             }
         })->paginate(5);

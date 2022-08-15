@@ -50,6 +50,10 @@ class StoreUpdateUserFormRequest extends FormRequest
                     'image',
                     'max:2048',
                 ],
+                'age' => [
+                    'required',
+                    'string'
+                ]
                 
         ];
 

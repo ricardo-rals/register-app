@@ -7,7 +7,8 @@
         <li>Nome: {{ $user->name }}</li>
         <li>E-mail: {{ $user->email }}</li>
         <li>Telefone: {{ $user->phone_number }}</li>
-        <li>Data de Nascimento: {{ date('d/m/Y', strtotime($user->birth_date)) }}</li>
+        <li>Data de Nascimento: {{ $user->birth_date->format('d-m-Y') }}</li>
+        <li>Idade: {{ $user->age }}</li>
         <img src="{{ url("storage/{$user->image}") }}" alt="{{ $user->name }}" class="object-cover h-48 w-96">
     </ul>
 
