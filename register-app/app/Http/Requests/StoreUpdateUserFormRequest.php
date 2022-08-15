@@ -71,7 +71,6 @@ class StoreUpdateUserFormRequest extends FormRequest
                     'max:2048',
                 ],
             ];
-           
         }
         return $rules;
     }
