@@ -6,6 +6,11 @@
 <h1>Listagem dos usuários</h1>
 <a href="{{ route('users.create') }}">NOVO USUARIO</a>
 
+<form action="{{ route('users.index') }}" method="get" class="py-5">
+    <input type="text" name="search" placeholder="Pesquisar" >
+    <button>Pesquisar</button>
+</form>
+
 <table class="min-w-full leading-normal shadow-md rounded-lg overflow-hidden">
     <thead>
         <tr>
